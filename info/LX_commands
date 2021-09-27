@@ -1,0 +1,11 @@
+
+Compile project
+g++ MidiRead.cpp -o ./bin/DrumConverter ./src/MidiFile.cpp ./src/MidiEvent.cpp ./src/Options.cpp ./src/MidiMessage.cpp ./src/Binasc.cpp ./src/MidiEventList.cpp -lm
+
+Midi Read Example
+./bin/MidiRead ./stuff/test2.mid 
+
+
+ g++ MidiConvert.cpp -o ./bin/DrumConverter ./src/MidiFile.cpp ./src/MidiEvent.cpp ./src/Options.cpp ./src/MidiMessage.cpp ./src/Binasc.cpp ./src/MidiEventList.cpp -lm
+
+g++ MidiConvert.cpp -o ./bin/DrumConverter ./src/MidiFile.cpp ./src/MidiEvent.cpp ./src/Options.cpp ./src/MidiMessage.cpp ./src/Binasc.cpp ./src/MidiEventList.cpp -lm && ./bin/DrumConverter ./stuff/testMidi.mid
