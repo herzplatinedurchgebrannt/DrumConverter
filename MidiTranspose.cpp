@@ -11,7 +11,7 @@ int noteMatrix[8][2] = {
     {60, 70},
     {61, 71},
     {62, 72},
-    {63, 73},
+    {64, 74},
     {65, 75},
     {66, 76},
     {67, 77},
@@ -40,8 +40,7 @@ midiConv midiConvArray[8] =
 
 cout << sizeof(midiConvArray)/sizeof(midiConvArray[0]) << endl;
 
-
-    // not used atm
+// not used atm
 int midiConvArraySize = sizeof(midiConvArray)/sizeof(midiConvArray[0]);
 
 int noteMatrixSize = sizeof(noteMatrix)/sizeof(noteMatrix[0]);
@@ -53,6 +52,7 @@ for (int c = 0; c < noteMatrixSize; c++)
 }
 
 cout << "------------------------------" << endl;
+
 
 Options options;
 options.define("t|transpose=i:10", "Semitones to transpose by");
@@ -73,15 +73,32 @@ for (int i=0; i<midifile.getTrackCount(); i++) {
     for (int j=0; j<midifile[i].getEventCount(); j++) {
         if (!midifile[i][j].isNote()) continue;
         if (midifile[i][j].getChannel() == 9) continue;
-        if (midifile[i][j].getP1() == 60){
+        for (int c = 0; c < noteMatrixSize; c++)
+        {
+            cout << midifile[i][j].getP1() << endl;
+            cout << noteMatrix[c][0] << endl;
+            //cout << noteMatrix[c][0] << endl;
+            if (midifile[i][j].getP1() == noteMatrix[c][0]){
+                midifile[i][j].setP1(noteMatrix[c][1]);
+                cout << "match" << endl;
+                break;
+                //cout << "match - old: " + noteMatrix[c][0] << "new: " + noteMatrix[c][1] << endl;
+            }
+
+        }
+        cout << "out of loop" << endl;
+        /*if (midifile[i][j].getP1() == 60){
             cout << "60 gefunden!" << endl;
             midifile[i][j].setP1(noteMatrix[0][1]);
             cout << "70 geschrieben!" << endl;
-
         }
-        /*
         int newkey = transpose + midifile[i][j].getP1();
         midifile[i][j].setP1(newkey);*/
+
+
+
+
+
     }
 }
 
