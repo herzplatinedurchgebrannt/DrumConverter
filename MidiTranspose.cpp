@@ -7,16 +7,17 @@ using namespace smf;
 
 int main(int argc, char** argv) {
 
-int noteMatrix[8][2] = {
-    {60, 70},
-    {61, 71},
-    {62, 72},
-    {64, 74},
-    {65, 75},
-    {66, 76},
-    {67, 77},
-    {68, 78}      
-};
+   int noteMatrix[9][2] = {
+      {36,24},
+      {38,26},
+      {46,26},
+      {57,56},
+      {55,54},
+      {42,23},
+      {48,41},
+      {50,38},
+      {43,41}    
+   };
 
 struct midiConv{
     int noteBefore;
@@ -26,17 +27,23 @@ struct midiConv{
     string pluginAfter;
 };
 
-midiConv midiConvArray[8] =
+midiConv midiConvArray[9] =
 {
-    {60,70,"KICK","SSD5","GGD4"},
-    {62,72,"SNARE","SSD5","GGD4"},
-    {64,74,"TOM_LO","SSD5","GGD4"},
-    {65,75,"TOM_HI","SSD5","GGD4"},
-    {66,76,"HIHAT","SSD5","GGD4"},
-    {67,77,"CRASH_LE","SSD5","GGD4"},
-    {68,78,"CRASH_RI","SSD5","GGD4"},
-    {69,79,"RIDE","SSD5","GGD4"}
+    {36,24,"KICK","SSD5","GGD4"},
+    {38,26,"SNARE","SSD5","GGD4"},
+    {46,26,"TOM_LO","SSD5","GGD4"},
+    {57,56,"TOM_HI","SSD5","GGD4"},
+    {55,54,"HIHAT","SSD5","GGD4"},
+    {42,23,"CRASH_LE","SSD5","GGD4"},
+    {48,41,"CRASH_RI","SSD5","GGD4"},
+    {50,28,"RIDE","SSD5","GGD4"},
+    {43,41,"RIDE","SSD5","GGD4"}
 };
+
+std::cout << midiConvArray[1].noteAfter << std::endl;
+
+int daa = midiConvArray[1].noteAfter;
+
 
 cout << sizeof(midiConvArray)/sizeof(midiConvArray[0]) << endl;
 
@@ -45,13 +52,25 @@ int midiConvArraySize = sizeof(midiConvArray)/sizeof(midiConvArray[0]);
 
 int noteMatrixSize = sizeof(noteMatrix)/sizeof(noteMatrix[0]);
 
+// -------- PLAYGROUND //
+for (int c = 0; c < midiConvArraySize; c++)
+{
+    cout << midiConvArray[c].noteAfter << endl;
+}
 
+//return 0;
+
+
+// END OF PLAYGROUND
+
+
+/*
 for (int c = 0; c < noteMatrixSize; c++)
 {
     cout << noteMatrix[c][0] << endl;
 }
 
-cout << "------------------------------" << endl;
+cout << "------------------------------" << endl;*/
 
 
 Options options;
@@ -73,13 +92,13 @@ for (int i=0; i<midifile.getTrackCount(); i++) {
     for (int j=0; j<midifile[i].getEventCount(); j++) {
         if (!midifile[i][j].isNote()) continue;
         if (midifile[i][j].getChannel() == 9) continue;
-        for (int c = 0; c < noteMatrixSize; c++)
+        for (int c = 0; c < midiConvArraySize; c++)
         {
             cout << midifile[i][j].getP1() << endl;
-            cout << noteMatrix[c][0] << endl;
+            cout << midiConvArray[c].noteBefore << endl;
             //cout << noteMatrix[c][0] << endl;
-            if (midifile[i][j].getP1() == noteMatrix[c][0]){
-                midifile[i][j].setP1(noteMatrix[c][1]);
+            if (midifile[i][j].getP1() == midiConvArray[c].noteBefore){
+                midifile[i][j].setP1(midiConvArray[c].noteAfter);
                 cout << "match" << endl;
                 break;
                 //cout << "match - old: " + noteMatrix[c][0] << "new: " + noteMatrix[c][1] << endl;

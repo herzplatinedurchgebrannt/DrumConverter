@@ -1,0 +1,24 @@
+----Start program here----
+72
+TPQ: 960
+TRACKS: 2
+
+Track 0
+Tick	Seconds	Dur	Message
+0	0		ff 3 8 74 65 73 74 4d 69 64 69  
+0	0		ff 58 4 4 2 18 8 pected end of file.
+0	0		ff 51 3 7 a1 20 
+0	0		ff 2f 0 
+
+Track 1
+Tick	Seconds	Dur	Message
+0	0		ff 3 4 54 65 73 74  
+3840	2	0.5	90 3c 72 I data input
+4800	2.5		80 3c 0 I data input
+4800	2.5	0.5	90 3e 72 data input
+5760	3		80 3e 0 data input
+5760	3	0.5	90 40 72 ta input
+6720	3.5		80 40 0 ta input
+6720	3.5	0.5	90 42 72  input
+7680	4		80 42 0  input
+7680	4		ff 2f 0 

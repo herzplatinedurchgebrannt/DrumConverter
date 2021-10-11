@@ -18,14 +18,22 @@ int main(int argc, char** argv) {
 
    cout << "----Start program here----" << endl;
 
-   int noteMatrix[4][2] = {
-      {60, 70},
-      {61, 71},
-      {62, 72},
-      {63, 73}      
+   // GGD5
+   int noteMatrix[9][2] = {
+      {36,24},
+      {38,26},
+      {46,26},
+      {57,56},
+      {55,54},
+      {42,23},
+      {48,41},
+      {50,38},
+      {43,41}    
    };
 
    cout << noteMatrix[2][1] << endl;
+
+   
 
 
 
