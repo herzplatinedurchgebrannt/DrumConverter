@@ -33,11 +33,6 @@ int main(int argc, char** argv) {
 
    cout << noteMatrix[2][1] << endl;
 
-   
-
-
-
-
    Options options;
    options.process(argc, argv);
 
@@ -72,9 +67,6 @@ int main(int argc, char** argv) {
 
          cout << '\t' << hex;
 
-         
-
-
          // Midi Message in hex
          for (int i=0; i<midifile[track][event].size(); i++)
             cout << (int)midifile[track][event][i] << ' ';
@@ -86,7 +78,6 @@ int main(int argc, char** argv) {
          cout << endl;
       }
    }
-
    return 0;
 }
 

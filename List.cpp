@@ -3,8 +3,12 @@
 #include <algorithm>
 #include <vector>
 
-int main()
+int main(int argc, char* argv[]) 
 {
+
+    std::cout << argv[1] << std::endl;
+
+
     std::list<int> missedNotes = {2,4,6,8};
 
     for (int n : missedNotes){
@@ -20,6 +24,5 @@ int main()
     {
         std::cout << v.at(i) << std::endl;
         std::cout << "drin";
-
     }
 }
