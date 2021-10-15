@@ -1,23 +1,19 @@
 #include "./src/MidiFile.h"
 #include "./src/Options.h"
 #include <iostream>
+#include <list>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 using namespace smf;
 
 int main(int argc, char** argv) {
 
-   int noteMatrix[9][2] = {
-      {36,24},
-      {38,26},
-      {46,26},
-      {57,56},
-      {55,54},
-      {42,23},
-      {48,41},
-      {50,38},
-      {43,41}    
-   };
+bool logConvert = true;
+std::list<int> missedNotes;
+
+std::vector<int> v;
 
 struct midiConv{
     int noteBefore;
@@ -40,37 +36,16 @@ midiConv midiConvArray[9] =
     {43,41,"RIDE","SSD5","GGD4"}
 };
 
-std::cout << midiConvArray[1].noteAfter << std::endl;
+//cout << sizeof(midiConvArray)/sizeof(midiConvArray[0]) << endl;
 
-int daa = midiConvArray[1].noteAfter;
-
-
-cout << sizeof(midiConvArray)/sizeof(midiConvArray[0]) << endl;
-
-// not used atm
 int midiConvArraySize = sizeof(midiConvArray)/sizeof(midiConvArray[0]);
 
-int noteMatrixSize = sizeof(noteMatrix)/sizeof(noteMatrix[0]);
-
-// -------- PLAYGROUND //
+/*
 for (int c = 0; c < midiConvArraySize; c++)
 {
     cout << midiConvArray[c].noteAfter << endl;
-}
+}*/
 
-//return 0;
-
-
-// END OF PLAYGROUND
-
-
-/*
-for (int c = 0; c < noteMatrixSize; c++)
-{
-    cout << noteMatrix[c][0] << endl;
-}
-
-cout << "------------------------------" << endl;*/
 
 
 Options options;
@@ -86,42 +61,81 @@ if (!midifile.status()) {
 }
 
 //int transpose = options.getInteger("transpose");
-int transpose = 5;
+//int transpose = 5;
+
+bool foundMatch = false;
 
 for (int i=0; i<midifile.getTrackCount(); i++) {
-    for (int j=0; j<midifile[i].getEventCount(); j++) {
+    for (int j=0; j<midifile[i].getEventCount(); j++) 
+    {
         if (!midifile[i][j].isNote()) continue;
         if (midifile[i][j].getChannel() == 9) continue;
+
+        // loop matrix to find notes
         for (int c = 0; c < midiConvArraySize; c++)
         {
-            cout << midifile[i][j].getP1() << endl;
-            cout << midiConvArray[c].noteBefore << endl;
-            //cout << noteMatrix[c][0] << endl;
-            if (midifile[i][j].getP1() == midiConvArray[c].noteBefore){
+            foundMatch = false;
+
+            if (logConvert == false)
+            {    
+                cout << midifile[i][j].getP1() << endl;
+                cout << midiConvArray[c].noteBefore << endl;
+            }
+
+            if (midifile[i][j].getP1() == midiConvArray[c].noteBefore)
+            {
+                foundMatch = true;
                 midifile[i][j].setP1(midiConvArray[c].noteAfter);
-                cout << "match" << endl;
+                if (logConvert == true) 
+                    cout << "match" << endl;
                 break;
                 //cout << "match - old: " + noteMatrix[c][0] << "new: " + noteMatrix[c][1] << endl;
             }
-
         }
-        cout << "out of loop" << endl;
-        /*if (midifile[i][j].getP1() == 60){
-            cout << "60 gefunden!" << endl;
-            midifile[i][j].setP1(noteMatrix[0][1]);
-            cout << "70 geschrieben!" << endl;
+        // note not found in matrix -> add notes to matrix
+        if (logConvert == true && foundMatch == false)
+            cout << "out of loop: " << midifile[i][j].getP1() << endl;
+            //missedNotes.push_back(midifile[i][j].getP1());
+
+        // write first value to vector
+        if (v.empty())
+        {
+            v.push_back(midifile[i][j].getP1());
+            cout << "add first item";
         }
-        int newkey = transpose + midifile[i][j].getP1();
-        midifile[i][j].setP1(newkey);*/
-
-
-
-
-
+        // check if vector contains value
+        else                
+        {
+            bool addMissedNote = true;
+            for (int k = 0; k < v.size(); k++)
+            {
+                if (v.at(k) == midifile[i][j].getP1())
+                {
+                    addMissedNote = false;
+                    break;
+                }
+            }
+            if (addMissedNote == true)
+            {
+                v.push_back(midifile[i][j].getP1());
+            }
+        }
+    }
+    if (logConvert == true){
+        cout << "add those notes to matrix: " << endl;
+        for (int n : v){
+            cout << n << ";" << endl;
+        }
     }
 }
 
-if (options.getArgCount() < 2) cout << midifile;
-else midifile.write(options.getArg(2));
+if (options.getArgCount() < 2) 
+{
+    cout << midifile;
+}
+else 
+{
+    midifile.write(options.getArg(2));
+}
 return 0;
 }
