@@ -2,9 +2,20 @@
 #include <list>
 #include <algorithm>
 #include <vector>
+#include <filesystem>
+
+
+#include <experimental/filesystem>
+
+// for brevity
+namespace fs = std::experimental::filesystem;
 
 int main(int argc, char* argv[]) 
 {
+
+    std::cout << "Current path: " << fs::current_path() << std::endl;
+
+
 
     std::cout << argv[1] << std::endl;
 
